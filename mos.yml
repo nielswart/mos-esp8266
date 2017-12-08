@@ -29,7 +29,8 @@ config_schema:
   - ["pins", "o", {title: "Pins layout"}]
   - ["pins.led", "i", 13, {title: "LED GPIO pin"}]
   - ["pins.button", "i", 0, {title: "Button GPIO pin"}]
-  - ["pins.relay", "i", 12, {title: "Relay GPIO pin"}]
+  - ["sensor", "o", {title: "Sensor Configuration"}]
+  - ["relay", "o", {title: "Relay Configuration"}]
   - ["debug.factory_reset_gpio", 0]
 
 # These settings get compiled into the C structure, and can be accessed
