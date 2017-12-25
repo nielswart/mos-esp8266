@@ -21,62 +21,36 @@
     <body>
       <nav class="nav" tabindex="-1" onclick="this.focus()">
         <div class="container">
-          <a class="pagename current" href="https://mongoose-os.com">Mongoose OS app</a>
+          <a class="pagename current" href="https://mongoose-os.com">Device Settings</a>
        </div>
      </nav>
      <div class="container">
       <div class="hero">
-          <h1>WiFi setup via Web UI</h1>
-          <p>This <a href="https://mongoose-os.com">Mongoose OS</a> app shows
-        how to start a device in Access Point mode (AP) and configure Station mode
-        via simple Web UI.</p>
-          <p>This page communicates with the device via
-          <a href="https://mongoose-os.com/docs/#/rpc/">Mongoose OS RPC mechanism</a>
-          using HTTP/RESTful as a transport protocol. A small JavaScript library,
-          <a href="http://zeptojs.com/">zepto</a>, is used as a drop-in replacement
-          for jQuery, for making AJAX calls to the device.
-        </p>
-    
-        <p>Open <code>fs/index.html</code>, or right-click on this page and 
-          choose "view source".</p>
-    
-        <p>
-          First, this web page makes a call to the
-          <code>http://DEVICE_IP/rpc/Config.Get</code> RESTful endpoint, which
-        triggers <code>Config.Get</code> RPC service and returns a large JSON
-        object (click <a target="_blank" href="/rpc/Config.Get">here</a> to see) with full device configuration. From that object, we take
-        WiFi SSID and password, and stick them into the text inputs.
-      </p>
-    
-      <p>Second, we install a button click handler, which grabs values from the
-        text inputs, creates a JSON string with the device configuration subtree
-        that <code>Config.Set</code> RPC call expects,
-        and calls a <code>/rpc/Config.Set</code> endpoint.
-      </p>
-    
-      <p>Similarly, you can call any other RPC service that device has. Call
-        <code>RPC.List</code> to get a list of all RPC services available.
-      </p>
+          <h1>Device Config</h1>
+          <p>This page lets you configure your device's network and IoT Gateway settings</p>
       </div>
       <div class="row form">
-    
-        <div class="col c4">
+        <h3>Wifi Settings</h3>
+        <div class="col c6">
           <div class="form-control">
             <label for="ssid">WiFi Network:</label>
-            <input type="text" class="smooth" id="ssid" name="ssid" placeholder="Type WiFi network...">
+            <input type="text" class="smooth" id="ssid" name="ssid" placeholder="WiFi SSID...">
           </div>
           <div class="form-control">
             <label for="pass">WiFi Password:</label>
-            <input type="text" class="smooth" id="pass" name="pass" placeholder="Type WiFi password...">
+            <input type="text" class="smooth" id="pass" name="pass" placeholder="WiFi password...">
           </div>
-          <div class="form-control"><button href="#" class="btn btn-sm btn-c" id="save">Save WiFi settings</button></div>
-        </div>
-    
-        <div class="col c8">
-          <!-- <h3>Result:</h3> -->
-          <div id="result"></div>
-        </div>
-    
+          <h3>Gateway Settings</h3>
+          <div class="form-control">
+            <label for="ssid">Gateway Hostname:</label>
+            <input type="text" class="smooth" id="gateway" name="gateway" placeholder="Hostname/IP:port...">
+          </div>
+          <div class="form-control"><button href="#" class="btn btn-sm btn-c" id="save">Save settings</button></div>
+        </div>    
+      </div>
+      <div class="col c8">
+        <!-- <h3>Result:</h3> -->
+        <div id="result"></div>
       </div>
     </div>
     
@@ -92,6 +66,7 @@
           log('Result: ' + JSON.stringify(data));
           $('#ssid').val(data.wifi.sta.ssid);
           $('#pass').val(data.wifi.sta.pass);
+          $('#gateway').val(data.mqtt.server);
         },
       });
     
@@ -99,7 +74,20 @@
         log('Calling /rpc/Config.Set  ...');
         $.ajax({
           url: '/rpc/Config.Set',
-          data: JSON.stringify({config: {wifi: {sta: {enable: true, ssid: $('#ssid').val(), pass: $('#pass').val()}}}}),
+          data: JSON.stringify({
+            config: {
+              wifi: {
+                sta: {
+                  enable: true,
+                  ssid: $('#ssid').val(),
+                  pass: $('#pass').val()
+                }
+              },
+              mqtt: {
+                server: $('#gateway').val(),
+              }
+            }
+          }),
           type: 'POST',
           // contentType: 'application/json',
           success: function(data) {

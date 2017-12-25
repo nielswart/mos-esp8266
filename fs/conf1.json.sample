@@ -4,11 +4,11 @@
     },
     "wifi": {
         "ap": {
-            "ssid": "Sonoff_ABCDEF",
+            "ssid": "mOS_ABCDEF",
             "pass": ""
         }
     },
     "mqtt": {
-        "server": "192.168.1.1:1883"
+        "server": "GATEWAYIP:1883"
     }
 }

@@ -1,4 +1,4 @@
-author: Niel Swart
+author: Niel Swart <niel@nielswart.com>
 description: General configurable sensor node running Mongoose OS
 arch: esp8266, esp32
 version: 0.1
@@ -55,8 +55,6 @@ libs:
   - origin: https://github.com/mongoose-os-libs/mqtt
   - origin: https://github.com/mongoose-os-libs/rpc-mqtt
   - origin: https://github.com/mongoose-os-libs/mjs
-
-  
 
 # Used by the mos tool to catch mos binaries incompatible with this file format
 manifest_version: 2017-05-18

@@ -19,6 +19,6 @@ Build with
 Now flash with:
 ```mos flash```
 
-A web UI to configure the wifi settings is in the works.
+A web UI to configure the wifi and MQTT settings is in the works.
 
 # The software
